@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPN Calculator</title>
+</head>
+<body>
+    <h1>Reverse Polish Notation <br> Calculator</h1>
+    
+    <div class="calculator">
+        <!-- Input field for user input -->
+        
+        
+        <!-- Stack display -->
+        <div class="stacks" align="center">
+            <input type="text" id="stack8" readonly />
+            <input type="text" id="stack7" readonly />
+            <input type="text" id="stack6" readonly />
+            <input type="text" id="stack5" readonly />
+            <input type="text" id="stack4" readonly />
+            <input type="text" id="stack3" readonly />
+            <input type="text" id="stack2" readonly />
+            <input type="text" id="stack1" readonly />
+            <input type="text" id="userInput" placeholder="Enter a number"  class="userInput"/>
+        </div>
+        
+        <!-- Operator buttons and Clear button -->
+        <button onclick="enter()">ENTER</button>
+        <button onclick="operate('+')">+</button>
+        <button onclick="operate('-')">-</button>
+        <button onclick="operate('*')">*</button>
+        <button onclick="operate('/')">/</button>
+        <button onclick="clearStack()">CLEAR</button>
+    </div>
+
+    <script>
+        // Initialize the stack with zeros
+        const stack = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        // Function to update the stack display
+        function updateStack() {
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`stack${i}`).value = stack[i - 1];
+            }
+        }
+
+        // Function to perform an operation
+        function operate(operator) {
+            const num1 = stack.shift();
+            const num2 = stack.shift();
+
+            let result;
+            switch (operator) {
+                case '+':
+                    result = num2 + num1;
+                    break;
+                case '-':
+                    result = num2 - num1;
+                    break;
+                case '*':
+                    result = num2 * num1;
+                    break;
+                case '/':
+                    if (num1 === 0) {
+                        alert("Error: Division by zero!");
+                        stack.unshift(num2, num1);
+                        return;
+                    }
+                    result = num2 / num1;
+                    break;
+                default:
+                    return;
+            }
+
+            stack.unshift(result, 0, 0, 0, 0, 0, 0, 0);
+            updateStack();
+        }
+
+        // Function to handle ENTER button
+        function enter() {
+            const input = parseFloat(document.getElementById('userInput').value);
+            if (!isNaN(input)) {
+                stack.unshift(input, ...stack.slice(0, 7));
+                updateStack();
+            }
+            document.getElementById('userInput').value = '';
+        }
+
+        // Function to clear the stack
+        function clearStack() {
+            for (let i = 0; i < 8; i++) {
+                stack[i] = 0;
+            }
+            updateStack();
+        }
+
+        // Handle ENTER key press
+        document.getElementById('userInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                enter();
+            }
+        });
+    </script>
+</body>
+</html>

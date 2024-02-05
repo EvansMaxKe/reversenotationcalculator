@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPN Calculator</title>
+</head>
+<body>
+    <h1>Reverse Polish Notation <br> Calculator</h1>
+
+    <div class="calculator">
+        <!-- Input field for user to input the values-->
+        <input type="text" id="userInput" placeholder="Enter a number" class="userInput">
+
+        <!-- Operator and Clear Buttons -->
+        <button id="enter">ENTER</button>
+        <button id="plus">+</button>
+        <button id="minus">-</button>
+        <button id="multiply">×</button>
+        <button id="divide">÷</button>
+        <button id="clear">CLEAR</button>
+
+        <!-- The stack dispaly -->
+        <div class="stack" align="center">
+            <input type="text" id="stack8" readonly>
+            <input type="text" id="stack7" readonly>
+            <input type="text" id="stack6" readonly>
+            <input type="text" id="stack5" readonly>
+            <input type="text" id="stack4" readonly>
+            <input type="text" id="stack3" readonly>
+            <input type="text" id="stack2" readonly>
+            <input type="text" id="stack1" readonly>
+        </div>
+    </div>
+
+    <div class="usage">
+        <h3>How To Use RPN </h3>
+        <p>1. Type number in the "Enter a number" field and click Enter</p>
+        <p>2. Type the 2nd second number and click Enter</p>
+        <p>The numbers will be added in the stack from bottom to top</p>
+        <p>3. Click the operator e.g +,-,*,/</p>
+        <p>Clear the stack using "Clear" Button</p>
+    </div>
+    <!-- javascript section -->
+    <script>
+        function Calculator() {
+            // Initialize the stack with zeros
+            this.stack = [0, 0, 0, 0, 0, 0, 0, 0];
+
+             // Function to update the stack display
+            this.updateStackDisplay = function() {
+                for (let i = 0; i < this.stack.length; i++) {
+                    const stackItem = document.getElementById(`stack${i + 1}`);
+                    stackItem.value = this.stack[i];
+                }
+            }
+
+            
+            // Function to handle ENTER button
+            this.enter = function() {
+                this.stack.pop();
+                this.stack.unshift(Number(document.getElementById('userInput').value || 0));
+                this.updateStackDisplay();
+                document.getElementById('userInput').value = '';
+            }
+
+            // Functions to perform arithmetic operations
+            this.plus = function() {
+                const num1 = this.stack.shift();
+                const num2 = this.stack.shift();
+                this.stack.unshift(num1 + num2);
+                this.stack.push(0);
+                this.updateStackDisplay();
+            }
+
+            this.minus = function() {
+                const num1 = this.stack.shift();
+                const num2 = this.stack.shift();
+                this.stack.unshift(num2 - num1);
+                this.stack.push(0);
+                this.updateStackDisplay();
+            }
+
+            this.multiply = function() {
+                const num1 = this.stack.shift();
+                const num2 = this.stack.shift();
+                this.stack.unshift(num1 * num2);
+                this.stack.push(0);
+                this.updateStackDisplay();
+            }
+
+            this.divide = function() {
+                const num1 = this.stack.shift();
+                const num2 = this.stack.shift();
+                if (num1 !== 0) {
+                    this.stack.unshift(num2 / num1);
+                } else {
+                    // Handle division by zero or invalid input
+                    // You can choose to display an error message or NaN in the stack
+                    this.stack.unshift('NaN');
+                }
+                this.stack.push(0);
+                this.updateStackDisplay();
+            }
+
+             // Function to clear the stack
+            this.clear = function() {
+                this.stack = [0, 0, 0, 0, 0, 0, 0, 0];
+                this.updateStackDisplay();
+            }
+        }
+
+        //Calculator Constructor
+        const calculator = new Calculator();
+
+        document.getElementById('enter').addEventListener('click', function () {
+            calculator.enter();
+        });
+
+        document.getElementById('plus').addEventListener('click', function () {
+            calculator.plus();
+        });
+
+        document.getElementById('minus').addEventListener('click', function () {
+            calculator.minus();
+        });
+
+        document.getElementById('multiply').addEventListener('click', function () {
+            calculator.multiply();
+        });
+
+        document.getElementById('divide').addEventListener('click', function () {
+            calculator.divide();
+        });
+
+        document.getElementById('clear').addEventListener('click', function () {
+            calculator.clear();
+        });
+
+        // Handle ENTER key press
+        let userInput = document.getElementById('userInput');
+        userInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                calculator.enter();
+            }
+        });
+
+        calculator.updateStackDisplay();
+    </script>
+
+    <!-- For styling the document -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Styling for the calculator container */
+        div.calculator{
+            box-shadow: 2px 2px 4px black;
+            border-radius: 8px;
+            padding: 3%;
+            width: 30%;
+            margin: 0 auto;
+            background-color: lightgray;
+        }
+        /* for styling the stacks */
+        div.stacks input{
+        display: block; 
+        align-items: center;
+        text-align: center;
+        }
+        /* Styling for the input field and stack display */
+        input[type="text"] {
+            width:70%;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        /* Styling for operator buttons and clear button */
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 18px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 2px 2px 4px white;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+        input.userInput{
+            box-shadow: 2px 2px 4px black;
+        }
+        div.usage{
+            width: 30%;
+            margin-top: 2%;
+            border: 1px solid black;
+            background-color: rgb(218, 241, 248);
+            margin: 2% auto;
+        }
+    </style>
+</body>
+</html>

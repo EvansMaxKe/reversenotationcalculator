@@ -1,0 +1,54 @@
+/* Styling for the calculator container */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+div.calculator{
+    box-shadow: 2px 2px 4px black;
+    border-radius: 8px;
+    padding: 3%;
+    width: 30%;
+    margin: 0 auto;
+    background-color: lightgray;
+}
+/* for styling the stacks */
+div.stacks input{
+   display: block; 
+   align-items: center;
+   text-align: center;
+}
+/* Styling for the input field and stack display */
+input[type="text"] {
+    width:70%;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+/* Styling for operator buttons and clear button */
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 18px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px white;
+}
+
+button:hover {
+    background-color: #555;
+}
+input.userInput{
+    box-shadow: 2px 2px 4px black;
+}
